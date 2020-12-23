@@ -29,42 +29,41 @@ class Clothes {
     }
 }
 
+const all = 'all';
+
 class ShoppingMall {
     constructor() {
+        this.filter = {'kind': all, 'size': all, 'color': all, 'sex': all};
+
         this.classes = {
             'kind': ['pants', 'skirt', 'tshirt'],
             'size': ['large', 'small'],
             'color': ['blue', 'pink', 'yellow'],
             'sex': ['male', 'female']
         };
+    }
 
-        this.AllClothes = [];
+    getClothes(Changes){
+        if (Changes) this.setFilter(Changes);
+        return this.getFilteredClothes();
+    }
 
-        for (let kind of this.classes['kind']){
-            for (let size of this.classes['size']){
-                for (let color of this.classes['color']){
-                    for (let sex of this.classes['sex']){
-                        this.AllClothes.push(new Clothes(kind, size, color, sex));
-                    }
-                }
-            }
+    setFilter(Changes){
+        for (let key in Changes){
+            this.filter[key] = Changes[key];
         }
     }
 
-    getAllClothes() {
-        return this.AllClothes;
-    }
-
-    getFilteredClothes(_kind, _size, _color, _sex){
+    getFilteredClothes(){
         let FilteredClothes = [];
         for (let kind of this.classes['kind']){
-            if (_kind !== 'all' && kind !== _kind) continue;
+            if (this._filtered('kind', kind)) continue;
             for (let size of this.classes['size']){
-                if (_size !== 'all' && size !== _size) continue;
+                if (this._filtered('size', size)) continue;
                 for (let color of this.classes['color']){
-                    if (_color !== 'all' && color !== _color) continue;
+                    if (this._filtered('color', color)) continue;
                     for (let sex of this.classes['sex']){
-                        if (_sex !== 'all' && sex !== _sex) continue;
+                        if (this._filtered('sex', sex)) continue;
                         FilteredClothes.push(new Clothes(kind, size, color, sex));
                     }
                 }
@@ -72,14 +71,17 @@ class ShoppingMall {
         }
         return FilteredClothes;
     }
+
+    _filtered(type, target){
+        return this.filter[type] !== all && target !== this.filter[type];
+    }
 }
 
-let Closet = new ShoppingMall();
+let shoppingMall = new ShoppingMall();
 
-let All = Closet.getAllClothes();
 let items = document.getElementById('shelf');
 
-for (let clothes of All){
+for (let clothes of shoppingMall.getClothes()){
     items.appendChild(clothes.getDomElement());
 }
 
@@ -88,7 +90,7 @@ function filterBtn(){
         while (items.hasChildNodes()){
             items.removeChild(items.lastChild);
         }
-        let FilteredClothes = Closet.getFilteredClothes(this.id.slice(9), 'all', 'all', 'all');
+        let FilteredClothes = shoppingMall.getClothes({'kind': this.id.slice(9)});
         for (let clothes of FilteredClothes){
             items.appendChild(clothes.getDomElement());
         }
@@ -97,8 +99,7 @@ function filterBtn(){
         while (items.hasChildNodes()){
             items.removeChild(items.lastChild);
         }
-        console.log(this.id.slice(9));
-        let FilteredClothes = Closet.getFilteredClothes('all', 'all', this.id.slice(10), 'all');
+        let FilteredClothes = shoppingMall.getClothes({'color': this.id.slice(10)});
         for (let clothes of FilteredClothes){
             items.appendChild(clothes.getDomElement());
         }
