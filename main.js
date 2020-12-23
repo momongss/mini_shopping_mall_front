@@ -38,30 +38,77 @@ class ShoppingMall {
             'sex': ['male', 'female']
         };
 
-        let total = [[]]
-        let newTotal = []
-        for (let kind of this.classes['kind']){
-            let tmp = [...total];
-            for (let t of tmp){
-                t.push(kind);
-            }
-            newTotal.push(tmp[0]);
-        }
+        this.AllClothes = [];
 
-        this.kind = new Set();
+        for (let kind of this.classes['kind']){
+            for (let size of this.classes['size']){
+                for (let color of this.classes['color']){
+                    for (let sex of this.classes['sex']){
+                        this.AllClothes.push(new Clothes(kind, size, color, sex));
+                    }
+                }
+            }
+        }
     }
 
     getAllClothes() {
-        
+        return this.AllClothes;
+    }
+
+    getFilteredClothes(_kind, _size, _color, _sex){
+        let FilteredClothes = [];
+        for (let kind of this.classes['kind']){
+            if (_kind !== 'all' && kind !== _kind) continue;
+            for (let size of this.classes['size']){
+                if (_size !== 'all' && size !== _size) continue;
+                for (let color of this.classes['color']){
+                    if (_color !== 'all' && color !== _color) continue;
+                    for (let sex of this.classes['sex']){
+                        if (_sex !== 'all' && sex !== _sex) continue;
+                        FilteredClothes.push(new Clothes(kind, size, color, sex));
+                    }
+                }
+            }
+        }
+        return FilteredClothes;
     }
 }
 
 let Closet = new ShoppingMall();
 
-let testClothes = new Clothes('pants', 'large', 'blue', 'male');
-let testClothes2 = new Clothes('skirt', 'small', 'blue', 'female');
-
+let All = Closet.getAllClothes();
 let items = document.getElementById('shelf');
 
-items.appendChild(testClothes.getDomElement());
-items.appendChild(testClothes2.getDomElement());
+for (let clothes of All){
+    items.appendChild(clothes.getDomElement());
+}
+
+function filterBtn(){
+    if (this.id.includes('kind')){
+        while (items.hasChildNodes()){
+            items.removeChild(items.lastChild);
+        }
+        let FilteredClothes = Closet.getFilteredClothes(this.id.slice(9), 'all', 'all', 'all');
+        for (let clothes of FilteredClothes){
+            items.appendChild(clothes.getDomElement());
+        }
+    }
+    else if (this.id.includes('color')){
+        while (items.hasChildNodes()){
+            items.removeChild(items.lastChild);
+        }
+        console.log(this.id.slice(9));
+        let FilteredClothes = Closet.getFilteredClothes('all', 'all', this.id.slice(10), 'all');
+        for (let clothes of FilteredClothes){
+            items.appendChild(clothes.getDomElement());
+        }
+    }
+}
+
+document.getElementById('btn_kind_tshirt').onclick = filterBtn;
+document.getElementById('btn_kind_pants').onclick = filterBtn;
+document.getElementById('btn_kind_skirt').onclick = filterBtn;
+
+document.getElementById('btn_color_blue').onclick = filterBtn;
+document.getElementById('btn_color_yellow').onclick = filterBtn;
+document.getElementById('btn_color_pink').onclick = filterBtn;

@@ -5,6 +5,7 @@
 * {
   padding: 0;
   margin: 0;
+  font-weight: bold;
 }
 
 li {
@@ -81,6 +82,12 @@ header > .logo {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  overflow-y: scroll;
+  height: 400px;
+}
+
+#shelf::-webkit-scrollbar {
+  display: none;
 }
 
 #shelf > .item {
