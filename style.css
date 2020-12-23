@@ -20,7 +20,7 @@ body {
   padding-top: 50px;
 }
 
-header > .logo {
+header .logo {
   width: 100px;
   height: auto;
 }
@@ -81,7 +81,7 @@ header > .logo {
 #shelf {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   overflow-y: scroll;
   height: 400px;
 }
