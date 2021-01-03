@@ -86,7 +86,13 @@ for (let clothes of shoppingMall.getClothes()){
 }
 
 function filterBtn(){
+    // this는 뭐지?? 
+    // The object that is executing the current function.
+    // ==> JS에서 함수의 this는 현재 함수를 부른 객체를 가리킴.
+    // 이 경우 이벤트가 발생한 button이 this가 된다. 그래서 돌아가고 있다..
     if (this.id.includes('kind')){
+        // 문제 : items는 함수 밖에서 전역선언된 변수.. 파라미터로 전달받는게 더 좋을텐데...
+        // 지금 내가 짠 방식으론 파라미터 전달이 힘듦...
         while (items.hasChildNodes()){
             items.removeChild(items.lastChild);
         }
