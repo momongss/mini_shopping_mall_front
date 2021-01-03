@@ -18,5 +18,5 @@
     # 함수
     - JS 에서 함수는 this 를 가지는데 이 this는 함수를 호출한 객체를 가리킨다. (The object that is executing the current function.)
 
-    - 함수 정리노트
-    https://www.notion.so/5-5e2dd6eac2874c4aac2e6be67c4f227f
+- 함수 정리노트
+  https://www.notion.so/5-5e2dd6eac2874c4aac2e6be67c4f227f
